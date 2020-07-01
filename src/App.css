@@ -25,6 +25,7 @@ td {
   display: inline-block;
   font-size: 16px;
   margin-top: 18px;
+  margin-right: 5px;
   cursor: pointer;
   border-radius: 8px;
 }

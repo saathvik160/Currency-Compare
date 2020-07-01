@@ -12,8 +12,21 @@ class Compare extends React.Component {
     };
   }
 
+  refresh = () => {
+    if (this.state.result !== null) {
+      this.compareCurrencies();
+    }
+    else {
+      alert("No comparison to refresh");
+    }
+  }
+
   compareCurrencies = () => {
-    if (this.state.base !== this.state.target) {
+    if (this.state.base === "" || this.state.target === "") {
+      alert("Currency fields can not be empty");
+      this.setState({ base: "", target: "", result: null });
+    }
+    else if (this.state.base !== this.state.target) {
       axios
         .get(`https://api.exchangeratesapi.io/latest?base=${this.state.base}&symbols=${this.state.target}`)
         .then(response => {
@@ -25,7 +38,8 @@ class Compare extends React.Component {
         .catch(error => {
           alert(error.message);
         });
-    } else {
+    }
+    else {
       alert("Base currency and Target currency can not be same");
       this.setState({ base: "", target: "", result: null });
     }
@@ -51,7 +65,7 @@ class Compare extends React.Component {
           </tr>
           <tr>
             <td>
-              <span>Target Currency:</span>
+              <span>Currency To Compare:</span>
             </td>
             <td>
               <input name="comp" type="text" value={this.state.target} onChange={event => this.setState({ target: event.target.value, result: null })} />
@@ -59,6 +73,7 @@ class Compare extends React.Component {
           </tr>
         </table>
         <button className="button" onClick={this.compareCurrencies}>COMPARE</button>
+        <button className="button" onClick={this.refresh}>REFRESH</button>
         {this.state.result && this.state.base && <h3>1 {this.state.base} = {this.state.result} {this.state.target}</h3>}
       </div>
     );
